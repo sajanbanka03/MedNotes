@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MedNotes AI - Clinical Synthesis</title>
   
-  <!-- Tailwind CSS via CDN (Allows the file to work completely independently) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -23,25 +22,21 @@
     }
   </script>
   <style>
-    /* Custom scrollbar for better aesthetics */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; }
     ::-webkit-scrollbar-thumb:hover { background: #10b981; }
-    
     .animate-spin-slow { animation: spin 3s linear infinite; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 antialiased min-h-screen flex flex-col">
 
-  <!-- Toast Alert -->
   <div id="toast" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-20 opacity-0 max-w-sm bg-slate-900 border border-emerald-500/30 text-white rounded-xl shadow-2xl p-4 flex items-center gap-3">
     <div id="toastIcon" class="text-emerald-400 shrink-0"></div>
     <p id="toastMessage" class="text-xs font-semibold"></p>
   </div>
 
-  <!-- Global Header -->
   <header class="border-b border-slate-200 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-40 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
     <div class="flex items-center gap-2.5">
       <div class="bg-emerald-500 text-white p-2 rounded-xl shadow-md shadow-emerald-500/20" id="icon-header"></div>
@@ -55,41 +50,32 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-3">
-      <!-- API Key Connection -->
       <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg text-xs">
         <div id="icon-settings" class="text-slate-400"></div>
-        <input type="password" id="apiKeyInput" placeholder="Using default environment key..." class="bg-transparent border-none outline-none text-[11px] w-48 text-slate-800 dark:text-slate-200">
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key..." class="bg-transparent border-none outline-none text-[11px] w-48 text-slate-800 dark:text-slate-200">
         <button id="verifyApiKeyBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[10px] font-bold transition-all flex items-center gap-1 shrink-0">
-          <span id="verifyText">Verify</span>
+          <span id="verifyText">Save</span>
         </button>
       </div>
 
-      <!-- Localization Dropdown -->
       <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 rounded-lg text-xs">
         <div id="icon-globe" class="text-slate-400"></div>
         <select id="languageSelect" class="bg-transparent border-none outline-none font-medium text-slate-700 dark:text-slate-300">
           <option value="en" class="dark:bg-slate-900">EN - English</option>
           <option value="es" class="dark:bg-slate-900">ES - Español</option>
           <option value="fr" class="dark:bg-slate-900">FR - Français</option>
-          <option value="ar" class="dark:bg-slate-900">AR - العربية</option>
-          <option value="hi" class="dark:bg-slate-900">HI - हिन्दी</option>
         </select>
       </div>
 
-      <!-- Theme Switcher -->
       <button id="themeToggleBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors" title="Toggle system theme">
         <div id="icon-theme"></div>
       </button>
     </div>
   </header>
 
-  <!-- Main Multi-Column Content Workspace -->
   <main class="max-w-[1800px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 w-full">
     
-    <!-- Left Sidebar (col-span-3) -->
     <section class="lg:col-span-3 space-y-6">
-      
-      <!-- Upload Container -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-5 shadow-sm space-y-4">
         <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-2">
           <div id="icon-upload-title" class="text-emerald-500"></div>
@@ -110,7 +96,6 @@
         </div>
       </div>
 
-      <!-- Search & Document List -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
         <div class="relative">
           <div id="icon-search" class="absolute left-3 top-2.5 text-slate-400"></div>
@@ -121,13 +106,10 @@
             <span data-i18n="allDocs">All Clinical Documents</span>
             <span id="docCount">(0)</span>
           </div>
-          <div id="documentList" class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
-            <!-- Documents injected via JS -->
-          </div>
+          <div id="documentList" class="space-y-2 max-h-[380px] overflow-y-auto pr-1"></div>
         </div>
       </div>
 
-      <!-- Brand-to-Salt Lookups -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
         <div class="flex items-center gap-2">
           <div id="icon-pill-title" class="text-emerald-500"></div>
@@ -140,13 +122,9 @@
         </div>
         <div id="saltResultContainer"></div>
       </div>
-
     </section>
 
-    <!-- Central Workspace (col-span-6) -->
     <section class="lg:col-span-6 space-y-6 flex flex-col">
-      
-      <!-- Tabs -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-2xl flex gap-1.5 shadow-sm">
         <button data-tab="viewer" class="tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2.5 transition-all bg-emerald-500 text-white shadow-md shadow-emerald-500/15">
           <div class="icon-filetext"></div> <span data-i18n="viewer">Document Viewer</span>
@@ -159,10 +137,9 @@
         </button>
       </div>
 
-      <!-- Tab Contents -->
       <div id="tabContentViewer" class="tab-content block"></div>
+      
       <div id="tabContentTimeline" class="tab-content hidden space-y-6">
-        <!-- Canvas Chart Area -->
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
           <div class="flex flex-wrap justify-between items-center mb-6 gap-2">
             <div>
@@ -179,7 +156,6 @@
               <div class="w-full h-64 relative"><canvas id="bpChart" class="absolute inset-0 w-full h-full"></canvas></div>
               <div class="flex justify-center gap-4 mt-2 text-[10px] font-bold">
                 <span class="text-rose-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Systolic</span>
-                <span class="text-blue-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Diastolic</span>
               </div>
             </div>
             <div class="bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 p-4 rounded-xl">
@@ -191,17 +167,15 @@
             </div>
           </div>
         </div>
-        <!-- Timeline List -->
         <div class="space-y-4">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Timeline Progression Map</h3>
           <div id="timelineContainer" class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 pl-6 space-y-8"></div>
         </div>
       </div>
+      
       <div id="tabContentPrescription" class="tab-content hidden space-y-6"></div>
-
     </section>
 
-    <!-- Right Panel: AI Companion (col-span-3) -->
     <section class="lg:col-span-3 space-y-6">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col h-[650px]">
         <div class="bg-slate-100 dark:bg-slate-800/80 p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
@@ -243,7 +217,6 @@
   </footer>
 
   <script>
-    // --- 1. SVG Icon Library (Zero Dependency) ---
     const svgs = {
       activity: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>`,
       settings: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>`,
@@ -262,16 +235,14 @@
       spinner: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>`,
       book: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>`,
       clock: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
-      calendar: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>`,
       download: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>`,
       chevronright: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>`
     };
 
-    // Inject SVG icons
     document.getElementById('icon-header').innerHTML = svgs.activity.replace('width="100%" height="100%"', 'width="20" height="20"');
     document.getElementById('icon-settings').innerHTML = svgs.settings;
     document.getElementById('icon-globe').innerHTML = svgs.globe;
-    document.getElementById('icon-theme').innerHTML = svgs.moon; // defaults to dark mode toggle initially
+    document.getElementById('icon-theme').innerHTML = svgs.moon;
     document.getElementById('icon-upload-title').innerHTML = svgs.upload.replace('width="100%" height="100%"', 'width="16" height="16"');
     document.getElementById('icon-upload-center').innerHTML = svgs.upload.replace('width="100%" height="100%"', 'width="20" height="20"');
     document.getElementById('icon-spinner').innerHTML = svgs.spinner;
@@ -287,36 +258,10 @@
     document.querySelectorAll('.icon-trendingup').forEach(el => el.innerHTML = svgs.trendingup);
     document.querySelectorAll('.icon-pill').forEach(el => el.innerHTML = svgs.pill.replace('width="100%" height="100%"', 'width="16" height="16"'));
 
-    // --- 2. Data & Dictionaries ---
     const translations = {
-      en: {
-        title: "MedNotes AI", subtitle: "Clinical Synthesis & Patient Timeline Hub",
-        uploadArea: "Ingest Medical Document", uploadSub: "Drag and drop or browse files (PDF, JPG, PNG). Automatic OCR classification.",
-        searchDocs: "Search records...", allDocs: "All Clinical Documents",
-        rxBrandSalt: "Brand-to-Salt Cross-Reference", viewer: "Document Viewer",
-        timeline: "Medical History Map", rxTracker: "Rx & Appointments",
-        consultWarning: "CONFIDENTIAL MEDICAL ASSISTANCE. Always verify medication adjustments with your treating physician.",
-        vitalsSummary: "Abnormal Lab & Critical Vital Highlights"
-      },
-      es: {
-        title: "MedNotes AI", subtitle: "Síntesis Clínica y Centro de Línea de Tiempo del Paciente",
-        uploadArea: "Ingerir Documento Médico", uploadSub: "Arrastre y suelte o explore archivos. Clasificación OCR automática.",
-        searchDocs: "Buscar registros...", allDocs: "Todos los Documentos Clínicos",
-        rxBrandSalt: "Referencia Cruzada de Marca a Sal", viewer: "Visor de Documentos",
-        timeline: "Mapa de Historial Médico", rxTracker: "Recetas y Citas",
-        consultWarning: "ASISTENCIA MÉDICA CONFIDENCIAL. Siempre verifique los ajustes de medicación con su médico.",
-        vitalsSummary: "Valores Clínicos Anómalos"
-      },
-      fr: {
-        title: "MedNotes AI", subtitle: "Synthèse Clinique et Hub de Chronologie",
-        uploadArea: "Ingérer un Document", uploadSub: "Glissez-déposez ou parcourez les fichiers. Classification OCR.",
-        searchDocs: "Rechercher des dossiers...", allDocs: "Tous les Documents",
-        rxBrandSalt: "Référence Croisée Marque-Sel", viewer: "Visionneuse de Documents",
-        timeline: "Carte de l'Historique", rxTracker: "Prescriptions & Rendez-vous",
-        consultWarning: "ASSISTANCE MÉDICALE CONFIDENTIELLE. Vérifiez toujours avec votre médecin.",
-        vitalsSummary: "Valeurs Laboratoire Anormales"
-      }
-      // Arabic and Hindi stripped for brevity in boilerplate code to fit size limits, but framework works identically.
+      en: { title: "MedNotes AI", subtitle: "Clinical Synthesis & Patient Timeline Hub", uploadArea: "Ingest Medical Document", uploadSub: "Drag and drop or browse files (PDF, JPG, PNG). Automatic OCR classification.", searchDocs: "Search records...", allDocs: "All Clinical Documents", rxBrandSalt: "Brand-to-Salt Cross-Reference", viewer: "Document Viewer", timeline: "Medical History Map", rxTracker: "Rx & Appointments", consultWarning: "CONFIDENTIAL MEDICAL ASSISTANCE. Always verify medication adjustments with your treating physician.", vitalsSummary: "Abnormal Lab & Critical Vital Highlights" },
+      es: { title: "MedNotes AI", subtitle: "Síntesis Clínica y Centro de Línea de Tiempo", uploadArea: "Ingerir Documento Médico", uploadSub: "Arrastre y suelte o explore archivos. Clasificación OCR automática.", searchDocs: "Buscar registros...", allDocs: "Todos los Documentos Clínicos", rxBrandSalt: "Referencia Cruzada de Marca a Sal", viewer: "Visor de Documentos", timeline: "Mapa de Historial Médico", rxTracker: "Recetas y Citas", consultWarning: "ASISTENCIA MÉDICA CONFIDENCIAL. Siempre verifique con su médico.", vitalsSummary: "Valores Clínicos Anómalos" },
+      fr: { title: "MedNotes AI", subtitle: "Synthèse Clinique et Hub de Chronologie", uploadArea: "Ingérer un Document", uploadSub: "Glissez-déposez ou parcourez les fichiers. Classification OCR.", searchDocs: "Rechercher des dossiers...", allDocs: "Tous les Documents", rxBrandSalt: "Référence Croisée Marque-Sel", viewer: "Visionneuse de Documents", timeline: "Carte de l'Historique", rxTracker: "Prescriptions & Rendez-vous", consultWarning: "ASSISTANCE MÉDICALE CONFIDENTIELLE. Vérifiez avec votre médecin.", vitalsSummary: "Valeurs Laboratoire Anormales" }
     };
 
     const pharamaDatabase = [
@@ -328,77 +273,32 @@
     ];
 
     let documents = [
-      {
-        id: "doc-1", title: "Cardiology Consult & Lab Summary", category: "Progress Note", date: "2026-02-15",
-        patientName: "Robert Montgomery", provider: "Metro Heart Center - Dr. Jenkins",
-        summary: "Robert presents for a routine checkup. Notable hypertension is managed with current therapy, but blood pressure readings are elevated today.",
-        highlights: ["Systolic Blood Pressure: 145 mmHg (Elevated)", "Diastolic Blood Pressure: 92 mmHg (Stage 2)"],
-        vitalsOrLabs: [
-          { metric: "Systolic BP", value: 145, status: "High", unit: "mmHg" },
-          { metric: "Diastolic BP", value: 92, status: "High", unit: "mmHg" },
-          { metric: "Fasting Glucose", value: 104, status: "Borderline", unit: "mg/dL" }
-        ],
-        medications: [{ name: "Lisinopril", dosage: "10mg", timing: "Morning", instructions: "Take on empty stomach." }, { name: "Lipitor", dosage: "20mg", timing: "Night", instructions: "Avoid excessive grapefruit." }],
-        followUp: "Follow up with cardiologist in 4 weeks."
-      },
-      {
-        id: "doc-2", title: "Pathology Reports & Metabolic Panel", category: "Lab Report", date: "2026-04-10",
-        patientName: "Robert Montgomery", provider: "Evergreen Clinical Laboratories",
-        summary: "Follow-up fasting serum panel. Signs of metabolic response are positive, but persistent elevation of glycated hemoglobin suggests early state prediabetes.",
-        highlights: ["Fasting Glucose: 112 mg/dL (Impaired)", "HbA1c: 6.5% (Borderline)"],
-        vitalsOrLabs: [
-          { metric: "Systolic BP", value: 138, status: "Borderline", unit: "mmHg" },
-          { metric: "Diastolic BP", value: 88, status: "Normal", unit: "mmHg" },
-          { metric: "Fasting Glucose", value: 112, status: "High", unit: "mg/dL" }
-        ],
-        medications: [{ name: "Lisinopril", dosage: "20mg", timing: "Morning", instructions: "Dose increased." }],
-        followUp: "Schedule HbA1c review in 3 months."
-      },
-      {
-        id: "doc-3", title: "Endocrinology Consultation Rx", category: "Prescription", date: "2026-05-22",
-        patientName: "Robert Montgomery", provider: "Endocrine Specialists - Dr. Vance",
-        summary: "Active prescription therapy adjustment. Introduction of Glucophage to arrest escalating glucose levels.",
-        highlights: ["Rx: Glucophage (Metformin) 500mg starting BID"],
-        vitalsOrLabs: [
-          { metric: "Systolic BP", value: 130, status: "Normal", unit: "mmHg" },
-          { metric: "Diastolic BP", value: 82, status: "Normal", unit: "mmHg" },
-          { metric: "Fasting Glucose", value: 98, status: "Normal", unit: "mg/dL" }
-        ],
-        medications: [
-          { name: "Glucophage", dosage: "500mg", timing: "Noon & Night", instructions: "Take with meals." },
-          { name: "Synthroid", dosage: "50mcg", timing: "Morning", instructions: "30 mins before food." },
-          { name: "Lisinopril", dosage: "20mg", timing: "Morning", instructions: "Take with water." }
-        ],
-        followUp: "Return to endocrine clinic in 6 weeks."
-      }
+      { id: "doc-1", title: "Cardiology Consult & Lab Summary", category: "Progress Note", date: "2026-02-15", patientName: "Robert Montgomery", provider: "Metro Heart Center - Dr. Jenkins", summary: "Robert presents for a routine checkup. Notable hypertension is managed with current therapy, but blood pressure readings are elevated today.", highlights: ["Systolic Blood Pressure: 145 mmHg (Elevated)", "Diastolic Blood Pressure: 92 mmHg (Stage 2)"], vitalsOrLabs: [{ metric: "Systolic BP", value: 145, status: "High", unit: "mmHg" }, { metric: "Diastolic BP", value: 92, status: "High", unit: "mmHg" }, { metric: "Fasting Glucose", value: 104, status: "Borderline", unit: "mg/dL" }], medications: [{ name: "Lisinopril", dosage: "10mg", timing: "Morning", instructions: "Take on empty stomach." }, { name: "Lipitor", dosage: "20mg", timing: "Night", instructions: "Avoid excessive grapefruit." }], followUp: "Follow up with cardiologist in 4 weeks." },
+      { id: "doc-2", title: "Pathology Reports & Metabolic Panel", category: "Lab Report", date: "2026-04-10", patientName: "Robert Montgomery", provider: "Evergreen Clinical Laboratories", summary: "Follow-up fasting serum panel. Signs of metabolic response are positive, but persistent elevation of glycated hemoglobin suggests early state prediabetes.", highlights: ["Fasting Glucose: 112 mg/dL (Impaired)", "HbA1c: 6.5% (Borderline)"], vitalsOrLabs: [{ metric: "Systolic BP", value: 138, status: "Borderline", unit: "mmHg" }, { metric: "Diastolic BP", value: 88, status: "Normal", unit: "mmHg" }, { metric: "Fasting Glucose", value: 112, status: "High", unit: "mg/dL" }], medications: [{ name: "Lisinopril", dosage: "20mg", timing: "Morning", instructions: "Dose increased." }], followUp: "Schedule HbA1c review in 3 months." },
+      { id: "doc-3", title: "Endocrinology Consultation Rx", category: "Prescription", date: "2026-05-22", patientName: "Robert Montgomery", provider: "Endocrine Specialists - Dr. Vance", summary: "Active prescription therapy adjustment. Introduction of Glucophage to arrest escalating glucose levels.", highlights: ["Rx: Glucophage (Metformin) 500mg starting BID"], vitalsOrLabs: [{ metric: "Systolic BP", value: 130, status: "Normal", unit: "mmHg" }, { metric: "Diastolic BP", value: 82, status: "Normal", unit: "mmHg" }, { metric: "Fasting Glucose", value: 98, status: "Normal", unit: "mg/dL" }], medications: [{ name: "Glucophage", dosage: "500mg", timing: "Noon & Night", instructions: "Take with meals." }, { name: "Synthroid", dosage: "50mcg", timing: "Morning", instructions: "30 mins before food." }, { name: "Lisinopril", dosage: "20mg", timing: "Morning", instructions: "Take with water." }], followUp: "Return to endocrine clinic in 6 weeks." }
     ];
 
-    // --- 3. State Management ---
     const state = {
       activeDocId: "doc-1",
       activeTab: "viewer",
       language: "en",
       theme: "dark",
       apiKey: localStorage.getItem("mednotes_api_key") || "",
-      chatMessages: [{ role: "assistant", text: "Hello! I am your MedNotes clinical assistant. I have reviewed all of your records. You can ask me to explain medical terms or summarize reports.", time: "18:38" }]
+      chatMessages: [{ role: "assistant", text: "Hello! I am your MedNotes clinical assistant. I have reviewed all of your records. You can ask me to explain medical terms, summarize reports, or ask general AI questions.", time: "18:38" }]
     };
 
-    // --- 4. Utility Functions ---
+    // --- STREAMING_CHUNK:Defining UI rendering helper functions... ---
     const showToast = (message, type = "success") => {
       const toast = document.getElementById('toast');
       document.getElementById('toastMessage').innerText = message;
       document.getElementById('toastIcon').innerHTML = svgs.check;
-      
       toast.classList.remove('translate-y-20', 'opacity-0');
       setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3500);
     };
 
     const t = (key) => (translations[state.language] || translations.en)[key] || key;
-
     const updateI18nText = () => {
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        el.innerText = t(el.getAttribute('data-i18n'));
-      });
+      document.querySelectorAll('[data-i18n]').forEach(el => el.innerText = t(el.getAttribute('data-i18n')));
       document.getElementById('searchInput').placeholder = t('searchDocs');
     };
 
@@ -415,19 +315,14 @@
       return "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300";
     };
 
-    // --- 5. Rendering Functions ---
     const renderSidebarDocs = (filterText = "") => {
       const container = document.getElementById('documentList');
       const filtered = documents.filter(d => d.title.toLowerCase().includes(filterText.toLowerCase()) || d.category.toLowerCase().includes(filterText.toLowerCase()));
-      
       document.getElementById('docCount').innerText = `(${filtered.length})`;
       container.innerHTML = filtered.map(doc => {
         const isActive = doc.id === state.activeDocId;
-        const activeClasses = isActive 
-          ? "bg-emerald-500/10 border-emerald-500/40 shadow-sm" 
-          : "bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-950/40 dark:hover:bg-slate-900 border-slate-200/60 dark:border-slate-800/60";
+        const activeClasses = isActive ? "bg-emerald-500/10 border-emerald-500/40 shadow-sm" : "bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-950/40 dark:hover:bg-slate-900 border-slate-200/60 dark:border-slate-800/60";
         const titleColor = isActive ? "text-emerald-500 dark:text-emerald-400" : "text-slate-800 dark:text-slate-200";
-
         return `
           <div onclick="selectDocument('${doc.id}')" class="group cursor-pointer p-3.5 rounded-xl border transition-all flex justify-between items-center ${activeClasses}">
             <div class="space-y-1">
@@ -441,25 +336,19 @@
       }).join('');
     };
 
+    // --- STREAMING_CHUNK:Rendering the main document viewer components... ---
     const renderViewer = () => {
       const container = document.getElementById('tabContentViewer');
       const doc = documents.find(d => d.id === state.activeDocId);
       if(!doc) return;
 
       const hotspotsHtml = doc.vitalsOrLabs.map(v => {
-        const borderClass = v.status === "High" ? "border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/20" : v.status === "Borderline" ? "border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/20" : "border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-950/20";
+        const borderClass = v.status === "High" ? "border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-950/20" : v.status === "Borderline" ? "border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/20" : "border-emerald-200 bg-emerald-50 dark:border-emerald-900/50 dark:bg-emerald-950/20";
         const dotClass = v.status === "High" ? "bg-red-500 animate-pulse" : v.status === "Borderline" ? "bg-amber-500 animate-pulse" : "bg-emerald-500";
-        
         return `
           <div onclick="injectChatQuery('Explain what this reading means: ${v.metric} is ${v.value} ${v.unit}')" class="group cursor-pointer p-2.5 rounded border transition-all flex justify-between items-center ${borderClass}">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full ${dotClass}"></span>
-              <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">${v.metric}</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs font-mono font-bold text-slate-900 dark:text-slate-100">${v.value} ${v.unit}</span>
-              <div class="text-slate-400 group-hover:translate-x-0.5 transition-transform">${svgs.chevronright}</div>
-            </div>
+            <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full ${dotClass}"></span><span class="text-xs font-semibold text-slate-700 dark:text-slate-300">${v.metric}</span></div>
+            <div class="flex items-center gap-1.5"><span class="text-xs font-mono font-bold text-slate-900 dark:text-slate-100">${v.value} ${v.unit}</span><div class="text-slate-400 group-hover:translate-x-0.5 transition-transform">${svgs.chevronright}</div></div>
           </div>
         `;
       }).join('');
@@ -468,9 +357,7 @@
         <tr class="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/20">
           <td class="py-2.5 font-medium text-slate-800 dark:text-slate-200">${v.metric}</td>
           <td class="py-2.5 font-mono text-slate-700 dark:text-slate-300">${v.value} ${v.unit}</td>
-          <td class="py-2.5">
-            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${getStatusClass(v.status)}">${v.status}</span>
-          </td>
+          <td class="py-2.5"><span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${getStatusClass(v.status)}">${v.status}</span></td>
         </tr>
       `).join('');
 
@@ -486,28 +373,20 @@
               ${svgs.download} Export PDF
             </button>
           </div>
-
           <div class="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-5 bg-slate-50 dark:bg-slate-950 p-6 rounded-lg border-2 border-dashed border-slate-200 dark:border-slate-800 relative flex flex-col min-h-[350px]">
               <div class="absolute top-2 right-2 flex items-center gap-1.5 bg-emerald-500/10 text-emerald-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded">
                 <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> OCR Active
               </div>
               <div class="border-b border-slate-300 dark:border-slate-800 pb-3 mb-4">
-                <div class="flex items-center gap-2 text-slate-400 dark:text-slate-600">
-                  <div class="w-6 h-6">${svgs.activity}</div>
-                  <span class="text-[10px] font-bold tracking-widest uppercase">${doc.provider}</span>
-                </div>
-                <div class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                  <p>Patient: <strong>${doc.patientName}</strong></p>
-                  <p>ID: RM-948123-B | DOB: 1980-11-24</p>
-                </div>
+                <div class="flex items-center gap-2 text-slate-400 dark:text-slate-600"><div class="w-6 h-6">${svgs.activity}</div><span class="text-[10px] font-bold tracking-widest uppercase">${doc.provider}</span></div>
+                <div class="mt-2 text-xs text-slate-500 dark:text-slate-400"><p>Patient: <strong>${doc.patientName}</strong></p><p>ID: RM-948123-B | DOB: 1980-11-24</p></div>
               </div>
               <div class="space-y-4 my-auto">
                 <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1">Interactive Clinical Blocks (Click to explain):</div>
                 ${hotspotsHtml}
               </div>
             </div>
-
             <div class="lg:col-span-7 space-y-6">
               <div>
                 <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-2">Patient Clinical Synopsis</h3>
@@ -516,20 +395,13 @@
               <div>
                 <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-2" data-i18n="vitalsSummary">${t('vitalsSummary')}</h3>
                 <div class="space-y-2">
-                  ${doc.highlights.map(h => `
-                    <div class="flex items-start gap-3 bg-rose-500/5 border border-rose-500/15 p-3 rounded-lg">
-                      <div class="text-rose-500 shrink-0 mt-0.5">${svgs.shield}</div>
-                      <p class="text-xs text-rose-800 dark:text-rose-300 font-medium">${h}</p>
-                    </div>
-                  `).join('')}
+                  ${doc.highlights.map(h => `<div class="flex items-start gap-3 bg-rose-500/5 border border-rose-500/15 p-3 rounded-lg"><div class="text-rose-500 shrink-0 mt-0.5">${svgs.shield}</div><p class="text-xs text-rose-800 dark:text-rose-300 font-medium">${h}</p></div>`).join('')}
                 </div>
               </div>
               <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
                   <thead>
-                    <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-medium">
-                      <th class="py-2">Metric Profile</th><th class="py-2">Extracted Value</th><th class="py-2">Clinical Status</th>
-                    </tr>
+                    <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-medium"><th class="py-2">Metric Profile</th><th class="py-2">Extracted Value</th><th class="py-2">Clinical Status</th></tr>
                   </thead>
                   <tbody>${vitalsHtml}</tbody>
                 </table>
@@ -541,12 +413,12 @@
       updateI18nText();
     };
 
+    // --- STREAMING_CHUNK:Drawing dynamic canvas charts and timeline data... ---
     const drawLineChart = (canvasId, dataKey, colorStr) => {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const rect = canvas.parentElement.getBoundingClientRect();
-      
       canvas.width = rect.width;
       canvas.height = rect.height;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -562,9 +434,7 @@
       const minVal = Math.min(...points) * 0.9;
       const maxVal = Math.max(...points) * 1.1;
       const range = maxVal - minVal;
-      
-      const paddingX = 20;
-      const paddingY = 20;
+      const paddingX = 20, paddingY = 20;
       const stepX = (canvas.width - paddingX*2) / (points.length - 1);
 
       ctx.beginPath();
@@ -575,12 +445,10 @@
       points.forEach((val, i) => {
         const x = paddingX + (i * stepX);
         const y = canvas.height - paddingY - (((val - minVal) / range) * (canvas.height - paddingY*2));
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       });
       ctx.stroke();
 
-      // Draw dots
       points.forEach((val, i) => {
         const x = paddingX + (i * stepX);
         const y = canvas.height - paddingY - (((val - minVal) / range) * (canvas.height - paddingY*2));
@@ -595,14 +463,12 @@
 
     const renderTimeline = () => {
       setTimeout(() => {
-        drawLineChart('bpChart', 'Systolic BP', '#f43f5e'); // Red
-        // Draw diastolic on same chart overlay (crude custom logic for double lines omitted for brevity, keeping simple)
-        drawLineChart('glucoseChart', 'Fasting Glucose', '#10b981'); // Emerald
+        drawLineChart('bpChart', 'Systolic BP', '#f43f5e');
+        drawLineChart('glucoseChart', 'Fasting Glucose', '#10b981');
       }, 50);
 
       const sortedDocs = [...documents].sort((a,b) => new Date(b.date) - new Date(a.date));
       const container = document.getElementById('timelineContainer');
-      
       container.innerHTML = sortedDocs.map(doc => `
         <div class="relative">
           <div class="absolute -left-[35px] top-1.5 w-6 h-6 bg-slate-100 dark:bg-slate-900 border-2 border-emerald-500 rounded-full flex items-center justify-center text-emerald-500">
@@ -610,26 +476,12 @@
           </div>
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
             <div class="flex flex-wrap justify-between items-start gap-2 border-b border-slate-100 dark:border-slate-800 pb-3 mb-3">
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-400">${doc.date}</span>
-                <h4 class="text-base font-bold text-slate-800 dark:text-slate-100">${doc.title}</h4>
-                <p class="text-xs text-slate-500">${doc.provider}</p>
-              </div>
+              <div><span class="text-[10px] uppercase font-bold text-slate-400">${doc.date}</span><h4 class="text-base font-bold text-slate-800 dark:text-slate-100">${doc.title}</h4><p class="text-xs text-slate-500">${doc.provider}</p></div>
               <button onclick="selectDocument('${doc.id}')" class="text-xs text-emerald-600 hover:text-emerald-700 font-semibold">Inspect Source &rarr;</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div>
-                <span class="font-bold text-slate-400 block mb-1">Clinical Indices:</span>
-                <div class="flex flex-wrap gap-2">
-                  ${doc.vitalsOrLabs.map(v => `<div class="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded">${v.metric}: <span class="font-bold">${v.value} ${v.unit}</span></div>`).join('')}
-                </div>
-              </div>
-              <div>
-                <span class="font-bold text-slate-400 block mb-1">Medications:</span>
-                <div class="flex flex-wrap gap-2">
-                  ${doc.medications.map(m => `<div class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900/40 px-2.5 py-1 rounded font-semibold flex items-center gap-1.5"><div class="w-3 h-3">${svgs.pill}</div>${m.name} (${m.dosage})</div>`).join('')}
-                </div>
-              </div>
+              <div><span class="font-bold text-slate-400 block mb-1">Clinical Indices:</span><div class="flex flex-wrap gap-2">${doc.vitalsOrLabs.map(v => `<div class="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded">${v.metric}: <span class="font-bold">${v.value} ${v.unit}</span></div>`).join('')}</div></div>
+              <div><span class="font-bold text-slate-400 block mb-1">Medications:</span><div class="flex flex-wrap gap-2">${doc.medications.map(m => `<div class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900/40 px-2.5 py-1 rounded font-semibold flex items-center gap-1.5"><div class="w-3 h-3">${svgs.pill}</div>${m.name} (${m.dosage})</div>`).join('')}</div></div>
             </div>
           </div>
         </div>
@@ -639,9 +491,7 @@
     const renderPrescriptions = () => {
       const container = document.getElementById('tabContentPrescription');
       let allMeds = [];
-      documents.forEach(d => {
-        d.medications.forEach(m => allMeds.push({...m, date: d.date, source: d.title}));
-      });
+      documents.forEach(d => { d.medications.forEach(m => allMeds.push({...m, date: d.date, source: d.title})); });
 
       const morning = allMeds.filter(m => m.timing.toLowerCase().includes("morning"));
       const noon = allMeds.filter(m => m.timing.toLowerCase().includes("noon") || m.timing.toLowerCase().includes("day"));
@@ -649,12 +499,7 @@
 
       const medCard = (med, colorStr) => `
         <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-100 dark:border-slate-800 flex justify-between items-start">
-          <div>
-            <span class="text-base font-bold text-slate-800 dark:text-slate-100">${med.name}</span>
-            <span class="text-xs ml-2 bg-slate-200 dark:bg-slate-850 px-1.5 py-0.5 rounded font-mono font-bold">${med.dosage}</span>
-            <p class="text-xs text-slate-500 mt-1">${med.instructions}</p>
-            <span class="text-[10px] text-slate-400 block mt-2">Source: ${med.source}</span>
-          </div>
+          <div><span class="text-base font-bold text-slate-800 dark:text-slate-100">${med.name}</span><span class="text-xs ml-2 bg-slate-200 dark:bg-slate-850 px-1.5 py-0.5 rounded font-mono font-bold">${med.dosage}</span><p class="text-xs text-slate-500 mt-1">${med.instructions}</p><span class="text-[10px] text-slate-400 block mt-2">Source: ${med.source}</span></div>
           <div class="w-6 h-6 text-${colorStr}-500 shrink-0">${svgs.pill}</div>
         </div>
       `;
@@ -662,47 +507,25 @@
       container.innerHTML = `
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
           <div class="flex justify-between items-center mb-6">
-            <div>
-              <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Patient Active Medication Tracker</h3>
-              <p class="text-xs text-slate-500">Synthesized pill schedule extracted from current documentation.</p>
-            </div>
-            <span class="bg-emerald-500/10 text-emerald-600 px-3 py-1 rounded-full flex items-center gap-1.5 text-xs font-bold">
-              <div class="w-3.5 h-3.5">${svgs.clock}</div> Synced
-            </span>
+            <div><h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Patient Active Medication Tracker</h3><p class="text-xs text-slate-500">Synthesized pill schedule extracted from current documentation.</p></div>
+            <span class="bg-emerald-500/10 text-emerald-600 px-3 py-1 rounded-full flex items-center gap-1.5 text-xs font-bold"><div class="w-3.5 h-3.5">${svgs.clock}</div> Synced</span>
           </div>
           <div class="space-y-6">
-            <div class="border-l-4 border-amber-400 pl-4 space-y-2">
-              <h4 class="text-xs font-bold uppercase tracking-widest text-amber-500 flex items-center gap-1.5">
-                <div class="w-4 h-4">${svgs.sun}</div> Morning Slot (06:00 AM - 11:59 AM)
-              </h4>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${morning.map(m => medCard(m, 'amber')).join('')}</div>
-            </div>
-            <div class="border-l-4 border-emerald-400 pl-4 space-y-2">
-              <h4 class="text-xs font-bold uppercase tracking-widest text-emerald-500 flex items-center gap-1.5">
-                <div class="w-4 h-4">${svgs.activity}</div> Noon Slot (12:00 PM - 04:59 PM)
-              </h4>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${noon.map(m => medCard(m, 'emerald')).join('')}</div>
-            </div>
-            <div class="border-l-4 border-indigo-400 pl-4 space-y-2">
-              <h4 class="text-xs font-bold uppercase tracking-widest text-indigo-500 flex items-center gap-1.5">
-                <div class="w-4 h-4">${svgs.moon}</div> Night Slot (05:00 PM - 05:59 AM)
-              </h4>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${night.map(m => medCard(m, 'indigo')).join('')}</div>
-            </div>
+            <div class="border-l-4 border-amber-400 pl-4 space-y-2"><h4 class="text-xs font-bold uppercase tracking-widest text-amber-500 flex items-center gap-1.5"><div class="w-4 h-4">${svgs.sun}</div> Morning Slot (06:00 AM - 11:59 AM)</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${morning.map(m => medCard(m, 'amber')).join('')}</div></div>
+            <div class="border-l-4 border-emerald-400 pl-4 space-y-2"><h4 class="text-xs font-bold uppercase tracking-widest text-emerald-500 flex items-center gap-1.5"><div class="w-4 h-4">${svgs.activity}</div> Noon Slot (12:00 PM - 04:59 PM)</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${noon.map(m => medCard(m, 'emerald')).join('')}</div></div>
+            <div class="border-l-4 border-indigo-400 pl-4 space-y-2"><h4 class="text-xs font-bold uppercase tracking-widest text-indigo-500 flex items-center gap-1.5"><div class="w-4 h-4">${svgs.moon}</div> Night Slot (05:00 PM - 05:59 AM)</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${night.map(m => medCard(m, 'indigo')).join('')}</div></div>
           </div>
         </div>
       `;
     };
 
+    // --- STREAMING_CHUNK:Configuring the Gemini Chatbot integration and state handlers... ---
     const renderChat = () => {
       const feed = document.getElementById('chatFeed');
       feed.innerHTML = state.chatMessages.map(msg => `
         <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
           <div class="max-w-[85%] rounded-2xl p-3.5 space-y-1 ${msg.role === 'user' ? 'bg-emerald-500 text-white rounded-tr-none shadow-sm' : 'bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-tl-none text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line'}">
-            <div class="flex items-center gap-1.5 justify-between">
-              <span class="text-[9px] font-bold uppercase tracking-wider opacity-60">${msg.role === 'user' ? 'Patient' : 'Clinical AI'}</span>
-              <span class="text-[8px] opacity-40">${msg.time}</span>
-            </div>
+            <div class="flex items-center gap-1.5 justify-between"><span class="text-[9px] font-bold uppercase tracking-wider opacity-60">${msg.role === 'user' ? 'Patient' : 'Clinical AI'}</span><span class="text-[8px] opacity-40">${msg.time}</span></div>
             <p class="text-xs">${msg.text}</p>
           </div>
         </div>
@@ -710,36 +533,23 @@
       feed.scrollTop = feed.scrollHeight;
     };
 
-    // --- 6. Event Handlers ---
     const switchTab = (tabId) => {
       state.activeTab = tabId;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(el => {
-        el.className = "tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2.5 transition-all text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200";
-      });
+      document.querySelectorAll('.tab-btn').forEach(el => el.className = "tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2.5 transition-all text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200");
       
       const activeBtn = document.querySelector(`[data-tab="${tabId}"]`);
-      if(activeBtn) {
-        activeBtn.className = "tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2.5 transition-all bg-emerald-500 text-white shadow-md shadow-emerald-500/15";
-      }
+      if(activeBtn) activeBtn.className = "tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2.5 transition-all bg-emerald-500 text-white shadow-md shadow-emerald-500/15";
 
-      if(tabId === 'viewer') {
-        document.getElementById('tabContentViewer').classList.remove('hidden');
-        renderViewer();
-      } else if(tabId === 'timeline') {
-        document.getElementById('tabContentTimeline').classList.remove('hidden');
-        renderTimeline();
-      } else if(tabId === 'prescription') {
-        document.getElementById('tabContentPrescription').classList.remove('hidden');
-        renderPrescriptions();
-      }
+      if(tabId === 'viewer') { document.getElementById('tabContentViewer').classList.remove('hidden'); renderViewer(); }
+      else if(tabId === 'timeline') { document.getElementById('tabContentTimeline').classList.remove('hidden'); renderTimeline(); }
+      else if(tabId === 'prescription') { document.getElementById('tabContentPrescription').classList.remove('hidden'); renderPrescriptions(); }
     };
 
     const selectDocument = (id) => {
       state.activeDocId = id;
       renderSidebarDocs();
-      if(state.activeTab === 'viewer') renderViewer();
-      else switchTab('viewer');
+      if(state.activeTab === 'viewer') renderViewer(); else switchTab('viewer');
     };
 
     const injectChatQuery = (query) => {
@@ -756,7 +566,6 @@
       state.chatMessages.push({ role: 'user', text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
       renderChat();
 
-      // Show typing indicator
       const feed = document.getElementById('chatFeed');
       const typingHtml = `
         <div id="typingIndicator" class="flex justify-start">
@@ -771,103 +580,77 @@
       feed.insertAdjacentHTML('beforeend', typingHtml);
       feed.scrollTop = feed.scrollHeight;
 
-      // Call API
       const apiKey = state.apiKey;
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+      const recordsContext = JSON.stringify(documents, null, 2);
+      
+      // Fallback if user doesn't have an API key configured.
+      if (!apiKey) {
+        setTimeout(() => {
+          document.getElementById('typingIndicator')?.remove();
+          state.chatMessages.push({ role: 'assistant', text: "⚠️ To analyze specific patient records or general medical questions live, please input your Gemini API Key in the top navigation bar. \n\n*(Simulated system context test: The patient has elevated fasting glucose and requires dietary management.)*", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+          renderChat();
+        }, 1500);
+        return;
+      }
+
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
       const payload = {
         contents: [{ parts: [{ text }] }],
-        systemInstruction: { parts: [{ text: "You are MedNotes AI. Be precise and medical. Say consult doctor." }] }
+        systemInstruction: { parts: [{ text: `You are MedNotes AI. Act as a precise medical assistant. You can answer general questions (e.g. "What is AI?"), but always remind patients to consult doctors for medical advice. IMPORTANT: Use the following patient records as primary context to answer any questions about the patient's history, medications, or vitals: ${recordsContext}` }] }
       };
 
       try {
-        if(!apiKey) throw new Error("No API key");
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        
+        if (!response.ok) throw new Error("API Connection Failed");
         const data = await response.json();
         const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        
         if(reply) {
           state.chatMessages.push({ role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
         } else {
           throw new Error("Invalid response");
         }
       } catch (err) {
-        // Fallback simulation
-        setTimeout(() => {
-          let simulatedReply = "As your medical record assistant, I've analyzed your question based on local records. The metrics show elevated parameters requiring dietary supervision. \n\n*Disclaimer: Verify changes with your physician.*";
-          state.chatMessages.push({ role: 'assistant', text: simulatedReply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
-          document.getElementById('typingIndicator')?.remove();
-          renderChat();
-        }, 1500);
-        return;
+        state.chatMessages.push({ role: 'assistant', text: "Network connection failed. Please double check that your API key is valid and try again.", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
       }
       
       document.getElementById('typingIndicator')?.remove();
       renderChat();
     };
 
-    // --- 7. Initialization & Event Listeners ---
+    // --- STREAMING_CHUNK:Attaching DOM event listeners on load... ---
     document.addEventListener('DOMContentLoaded', () => {
-      
-      // Initial Renders
       document.getElementById('apiKeyInput').value = state.apiKey;
       renderSidebarDocs();
       switchTab('viewer');
       renderChat();
       updateI18nText();
 
-      // Theme logic
-      if(state.theme === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.getElementById('icon-theme').innerHTML = svgs.sun;
-      }
+      if(state.theme === 'light') { document.documentElement.classList.remove('dark'); document.getElementById('icon-theme').innerHTML = svgs.sun; }
+      
       document.getElementById('themeToggleBtn').addEventListener('click', () => {
         state.theme = state.theme === 'dark' ? 'light' : 'dark';
-        if(state.theme === 'dark') {
-          document.documentElement.classList.add('dark');
-          document.getElementById('icon-theme').innerHTML = svgs.moon;
-        } else {
-          document.documentElement.classList.remove('dark');
-          document.getElementById('icon-theme').innerHTML = svgs.sun;
-        }
-        if(state.activeTab === 'timeline') renderTimeline(); // Redraw chart for theme
+        if(state.theme === 'dark') { document.documentElement.classList.add('dark'); document.getElementById('icon-theme').innerHTML = svgs.moon; } 
+        else { document.documentElement.classList.remove('dark'); document.getElementById('icon-theme').innerHTML = svgs.sun; }
+        if(state.activeTab === 'timeline') renderTimeline(); 
       });
 
-      // API Key
       document.getElementById('apiKeyInput').addEventListener('input', (e) => {
         state.apiKey = e.target.value;
         localStorage.setItem("mednotes_api_key", state.apiKey);
       });
-      document.getElementById('verifyApiKeyBtn').addEventListener('click', () => {
-        showToast("Connected to Local Environment successfully.", "success");
-      });
-
-      // Language
-      document.getElementById('languageSelect').addEventListener('change', (e) => {
-        state.language = e.target.value;
-        updateI18nText();
-        showToast(`Language switched to ${e.target.value.toUpperCase()}`);
-      });
-
-      // Search documents
-      document.getElementById('searchInput').addEventListener('input', (e) => {
-        renderSidebarDocs(e.target.value);
-      });
-
-      // Tab Buttons
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => switchTab(e.currentTarget.getAttribute('data-tab')));
-      });
-
-      // Chat input
+      document.getElementById('verifyApiKeyBtn').addEventListener('click', () => showToast("API Key securely saved locally.", "success"));
+      document.getElementById('languageSelect').addEventListener('change', (e) => { state.language = e.target.value; updateI18nText(); showToast(`Language switched to ${e.target.value.toUpperCase()}`); });
+      document.getElementById('searchInput').addEventListener('input', (e) => renderSidebarDocs(e.target.value));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', (e) => switchTab(e.currentTarget.getAttribute('data-tab'))));
       document.getElementById('sendChatBtn').addEventListener('click', handleChatSubmit);
-      document.getElementById('chatInput').addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') handleChatSubmit();
-      });
+      document.getElementById('chatInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleChatSubmit(); });
 
-      // File Upload Simulation
       const dropZone = document.getElementById('dropZone');
       const fileInput = document.getElementById('fileInput');
       dropZone.addEventListener('click', () => fileInput.click());
@@ -879,28 +662,16 @@
         
         setTimeout(() => {
           const newDoc = {
-            id: `doc-${Date.now()}`, title: e.target.files[0].name.replace(/\.[^/.]+$/, ""),
-            category: "Lab Report", date: new Date().toISOString().split('T')[0],
-            patientName: "Robert Montgomery", provider: "General Practice Clinic",
-            summary: "Autogenerated from OCR. The document highlights clinical indices with vital signals.",
-            highlights: ["Fasting Plasma Glucose: 118 mg/dL (Elevated)", "Systolic BP: 140 mmHg (High)"],
-            vitalsOrLabs: [
-              { metric: "Systolic BP", value: 140, status: "High", unit: "mmHg" },
-              { metric: "Fasting Glucose", value: 118, status: "High", unit: "mg/dL" }
-            ],
-            medications: [{ name: "Norvasc", dosage: "5mg", timing: "Morning", instructions: "For peripheral circulatory management." }],
-            followUp: "Review clinical metrics within 30 days."
+            id: `doc-${Date.now()}`, title: e.target.files[0].name.replace(/\.[^/.]+$/, ""), category: "Lab Report", date: new Date().toISOString().split('T')[0], patientName: "Robert Montgomery", provider: "General Practice Clinic", summary: "Autogenerated from OCR. Document highlights clinical indices.", highlights: ["Systolic BP: 140 mmHg (High)", "Fasting Plasma Glucose: 118 mg/dL (Elevated)"], vitalsOrLabs: [{ metric: "Systolic BP", value: 140, status: "High", unit: "mmHg" }, { metric: "Fasting Glucose", value: 118, status: "High", unit: "mg/dL" }], medications: [{ name: "Norvasc", dosage: "5mg", timing: "Morning", instructions: "For peripheral circulatory management." }], followUp: "Review within 30 days."
           };
           documents.unshift(newDoc);
-          
           document.getElementById('uploadIdleState').classList.remove('hidden');
           document.getElementById('uploadProcessingState').classList.add('hidden');
           selectDocument(newDoc.id);
-          showToast("Document indexed successfully!", "success");
+          showToast("Document successfully indexed!", "success");
         }, 2000);
       });
 
-      // Salt Lookup
       document.getElementById('saltSearchInput').addEventListener('input', (e) => {
         const val = e.target.value;
         const container = document.getElementById('saltResultContainer');
@@ -908,31 +679,13 @@
 
         const match = pharamaDatabase.find(p => p.brand.toLowerCase().includes(val.toLowerCase()) || p.salt.toLowerCase().includes(val.toLowerCase()));
         if(match) {
-          container.innerHTML = `
-            <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-lg border border-slate-150 dark:border-slate-800 space-y-2 mt-2">
-              <div>
-                <span class="text-[10px] font-bold uppercase text-emerald-500 tracking-wider">${match.category}</span>
-                <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">${match.brand} &rarr; ${match.salt}</h4>
-              </div>
-              <div class="text-[10px] text-slate-400">
-                <p><strong>Strengths:</strong> ${match.strengths.join(", ")}</p>
-                <p class="mt-1"><strong>Warnings:</strong> ${match.warnings}</p>
-              </div>
-              <div class="bg-emerald-500/10 p-2 rounded text-[10px] text-emerald-600 font-medium">
-                <strong>Generics:</strong> ${match.substitutes.join(", ")}
-              </div>
-            </div>
-          `;
+          container.innerHTML = `<div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-lg border border-slate-150 dark:border-slate-800 space-y-2 mt-2"><div><span class="text-[10px] font-bold uppercase text-emerald-500 tracking-wider">${match.category}</span><h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">${match.brand} &rarr; ${match.salt}</h4></div><div class="text-[10px] text-slate-400"><p><strong>Strengths:</strong> ${match.strengths.join(", ")}</p><p class="mt-1"><strong>Warnings:</strong> ${match.warnings}</p></div><div class="bg-emerald-500/10 p-2 rounded text-[10px] text-emerald-600 font-medium"><strong>Generics:</strong> ${match.substitutes.join(", ")}</div></div>`;
         } else {
           container.innerHTML = `<div class="text-[10px] text-amber-500 bg-amber-500/10 p-2.5 rounded border border-amber-500/20 mt-2">No local match found. Ask Gemini.</div>`;
         }
       });
 
-      // Handle window resize for canvas redraws
-      window.addEventListener('resize', () => {
-        if(state.activeTab === 'timeline') renderTimeline();
-      });
-
+      window.addEventListener('resize', () => { if(state.activeTab === 'timeline') renderTimeline(); });
     });
   </script>
 </body>
